@@ -9,10 +9,13 @@ def scale(fun, V, F, values, sigma=2):
     return vfun(values)
 
 def scale_x(fun, V, F, values, sigma=2):
-    axis_array = onp.zeros(V.shape)
-    axis_array[:,0] = 1
-    axis_array = jnp.array(axis_array)
-    vfun = jnp.vectorize(lambda v: fun(V, F, V*axis_array*v, F, sigma))
+
+    def vfun(v):
+        scaling_factor_array = jnp.dot(jnp.ones(V.shape), jnp.array([[v,0,0],[0,1,0],[0,0,1]]))
+        return fun(V, F, V*scaling_factor_array, F, sigma)
+
+    vfun = jnp.vectorize(vfun)
+
     return vfun(values)
 
 def translate_x(fun, V, F, values, sigma=2):
