@@ -12,7 +12,7 @@ def scale_x(fun, V, F, values, sigma=2):
     axis_array = onp.zeros(V.shape)
     axis_array[:,0] = 1
     axis_array = jnp.array(axis_array)
-    vfun = jnp.vectorize(lambda v: fun(V, F, V + axis_array*v, F, sigma))
+    vfun = jnp.vectorize(lambda v: fun(V, F, V*axis_array*v, F, sigma))
     return vfun(values)
 
 def translate_x(fun, V, F, values, sigma=2):
